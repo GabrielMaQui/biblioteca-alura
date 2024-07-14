@@ -1,16 +1,19 @@
 package com.alura.biblioteca.models.bd;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
+@NoArgsConstructor
 @Getter
 @Setter
+@Entity
+@Table(name = "autor")
 public class Autor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +25,8 @@ public class Autor {
     private Integer fechaNacimiento;
     @Column(name = "death_year")
     private Integer fechaDefuncion;
+    @ManyToMany(mappedBy = "autores")
+    private List<Libro> libros;
 
     public Autor(String nombre, String s, String s1) {
         this.nombre = nombre;
