@@ -2,7 +2,7 @@ package com.alura.biblioteca.models.bd;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,7 +18,6 @@ public class Autor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     @Column(name = "name")
     private String nombre;
     @Column(name = "birth_year")
@@ -37,11 +36,18 @@ public class Autor {
 
     @Override
     public String toString() {
-        return "Autor{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", fechaNacimiento=" + fechaNacimiento +
-                ", fechaDefuncion=" + fechaDefuncion +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("Autor: ").append(nombre).append("\n");
+        sb.append("Fecha de nacimiento: ").append(fechaNacimiento).append("\n");
+        sb.append("Fecha de fallecimiento: ").append(fechaDefuncion).append("\n");
+        sb.append("Libros: [");
+        for (int i = 0; i < libros.size(); i++) {
+            sb.append(libros.get(i).getTitulo());
+            if (i < libros.size() - 1) {
+                sb.append(", ");
+            }
+        }
+        sb.append("]");
+        return sb.toString();
     }
 }

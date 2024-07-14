@@ -4,31 +4,64 @@ import com.alura.biblioteca.models.Datos;
 import com.alura.biblioteca.models.DatosLibros;
 import com.alura.biblioteca.models.bd.Autor;
 import com.alura.biblioteca.models.bd.Libro;
+import com.alura.biblioteca.repository.AutorRepository;
 import com.alura.biblioteca.repository.LibroRepository;
 import com.alura.biblioteca.service.ConsumoAPI;
 import com.alura.biblioteca.service.ConvierteDatos;
-import org.springframework.beans.factory.annotation.Autowired;
+
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
-import java.util.stream.Collectors;
+
 
 public class Principal {
     private static final String URL = "https://gutendex.com/books/?search=";
     private final ConsumoAPI consumoAPI = new ConsumoAPI();
     private final ConvierteDatos convierteDatos = new ConvierteDatos();
     private final Scanner teclado = new Scanner(System.in);
-
-
+    private int opcion = 0;
     private LibroRepository repository;
+    private AutorRepository autorRepository;
 
-    public Principal(LibroRepository repository) {
+    public Principal(LibroRepository repository, AutorRepository autorRepository) {
         this.repository = repository;
+        this.autorRepository = autorRepository;
     }
 
     public void muestraMenu() {
-        buscarPorTitulo("aaaaa");
+
+        do{
+            menu();
+            opcion = teclado.nextInt();
+
+            switch (opcion) {
+                case 1:
+                    System.out.println("Ingrese el nombre del libro: ");
+                    String nombreLibro = teclado.nextLine();
+                    buscarPorTitulo(nombreLibro);
+                    break;
+                case 2:
+                    buscarLibros();
+                    break;
+                case 3:
+                    buscarActores();
+                    break;
+            }
+
+        }while (opcion != 0);
+
+    }
+
+    private void buscarActores() {
+        List<Autor> autores = autorRepository.findAll();
+        autores.forEach(System.out::println);
+    }
+
+    private void buscarLibros() {
+        List<Libro> libros = repository.findAll();
+        libros.forEach(System.out::println);
+
     }
 
     public void buscarPorTitulo(String titulo) {
@@ -62,6 +95,7 @@ public class Principal {
 
 
     public void menu() {
+        System.out.println("------");
         System.out.println("Elija la opción a través de su número: ");
         System.out.println("1. Buscar libro por titulo");
         System.out.println("2. Listar libros registrados");

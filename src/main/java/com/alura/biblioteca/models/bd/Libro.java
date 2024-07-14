@@ -1,7 +1,7 @@
 package com.alura.biblioteca.models.bd;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,7 +10,6 @@ import java.util.List;
 
 
 @NoArgsConstructor
-
 @Getter
 @Setter
 @Entity
@@ -47,12 +46,17 @@ public class Libro {
 
     @Override
     public String toString() {
-        return "Libro{" +
-                "id=" + id +
-                ", titulo='" + titulo + '\'' +
-                ", autores=" + autores +
-                ", idiomas=" + idiomas +
-                ", numeroDeDescargas=" + numeroDeDescargas +
-                '}';
+        StringBuilder autoresStr = new StringBuilder();
+        for (Autor autor : autores) {
+            if (autoresStr.length() > 0) autoresStr.append(", ");
+            autoresStr.append(autor.getNombre());
+        }
+
+        return "------ LIBRO ------\n" +
+                "Título: " + titulo + "\n" +
+                "Autor: " + autoresStr + "\n" +
+                "Idioma: " + String.join(", ", idiomas) + "\n" +
+                "Número de descargas: " + numeroDeDescargas + "\n" +
+                "-------------------";
     }
 }
