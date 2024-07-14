@@ -29,14 +29,14 @@ public class Autor {
 
     public Autor(String nombre, String s, String s1) {
         this.nombre = nombre;
-        if(s1 == null){
+        if(s == null){
             this.fechaNacimiento = 0;
         } else {
-            this.fechaNacimiento = Integer.valueOf(s1);
+            this.fechaNacimiento = Integer.valueOf(s);
         }
 
 
-        if(s == null){
+        if(s1 == null){
             this.fechaDefuncion = 0;
         }
         else {

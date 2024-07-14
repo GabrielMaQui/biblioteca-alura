@@ -10,6 +10,7 @@ import com.alura.biblioteca.service.ConsumoAPI;
 import com.alura.biblioteca.service.ConvierteDatos;
 
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -33,7 +34,12 @@ public class Principal {
 
         do{
             menu();
-            opcion = teclado.nextInt();
+            try{
+                opcion = teclado.nextInt();
+            } catch (InputMismatchException e ){
+                opcion = -1;
+            }
+
             teclado.nextLine();
 
             switch (opcion) {
@@ -66,7 +72,11 @@ public class Principal {
     }
 
     private void buscarPorIdioma() {
-        System.out.print("Ingrese el idioma: ");
+        System.out.println("Ingrese el idioma: ");
+        System.out.println("es - español");
+        System.out.println("en - inglés");
+        System.out.println("fr - fránces");
+        System.out.println("pt - portugués");
         String idioma = teclado.nextLine();
         List<Libro> libros = repository.findAll();
         libros.stream()
@@ -75,9 +85,9 @@ public class Principal {
     }
 
     private void buscarAutoresVivos() {
-        System.out.print("Ingrese el año: ");
+        System.out.print("Ingrese el año a buscar: ");
         int anio = teclado.nextInt();
-        teclado.nextLine(); // Consumir la nueva línea después de nextInt()
+        teclado.nextLine();
 
         List<Autor> autores = autorRepository.findAll();
         autores.stream()
