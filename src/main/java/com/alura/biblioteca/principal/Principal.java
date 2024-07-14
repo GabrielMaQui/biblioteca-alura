@@ -28,7 +28,7 @@ public class Principal {
     }
 
     public void muestraMenu() {
-        buscarPorTitulo("quijote");
+        buscarPorTitulo("aaaaa");
     }
 
     public void buscarPorTitulo(String titulo) {
@@ -38,18 +38,25 @@ public class Principal {
         Optional<DatosLibros> librosBuscado = datos.libros().stream()
                 .filter(l -> l.titulo().toUpperCase().contains(titulo.toUpperCase()))
                 .findFirst();
+        if (librosBuscado.isEmpty()) {
+            System.out.println("Libro no encontrado");
+            return;
+        }
 
-        if (librosBuscado.isPresent()) {
+        Libro libroEncontrado = repository.findByTitulo(librosBuscado.get().titulo());
+
+        if(libroEncontrado != null) {
+            System.out.println("Libro encontrado");
+        }
+        else{
             List<Autor> autors = librosBuscado.get().autor().stream()
                     .map(a -> new Autor(a.nombre(), a.fechaDeNacimiento(), a.fechaDeDefuncion()))
                     .toList();
             Libro libroNuevo = new Libro(librosBuscado.get().titulo(), autors,
-                                        librosBuscado.get().idiomas(), librosBuscado.get().numeroDeDescargas());
+                    librosBuscado.get().idiomas(), librosBuscado.get().numeroDeDescargas());
             System.out.println(libroNuevo);
             repository.save(libroNuevo);
-        }
-        else{
-            System.out.println("Libro no encontrado");
+
         }
     }
 
