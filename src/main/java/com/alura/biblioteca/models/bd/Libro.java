@@ -29,7 +29,7 @@ public class Libro {
     )
     List<Autor> autores;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "libro_idiomas", joinColumns = @JoinColumn(name = "libro_id"))
     @Column(name = "languages")
     List<String> idiomas;

@@ -24,13 +24,25 @@ public class Autor {
     private Integer fechaNacimiento;
     @Column(name = "death_year")
     private Integer fechaDefuncion;
-    @ManyToMany(mappedBy = "autores")
+    @ManyToMany(mappedBy = "autores", fetch = FetchType.EAGER)
     private List<Libro> libros;
 
     public Autor(String nombre, String s, String s1) {
         this.nombre = nombre;
-        this.fechaNacimiento = Integer.valueOf(s1);
-        this.fechaDefuncion = Integer.valueOf(s1);
+        if(s1 == null){
+            this.fechaNacimiento = 0;
+        } else {
+            this.fechaNacimiento = Integer.valueOf(s1);
+        }
+
+
+        if(s == null){
+            this.fechaDefuncion = 0;
+        }
+        else {
+            this.fechaDefuncion = Integer.valueOf(s1);
+        }
+
     }
 
 

@@ -34,6 +34,7 @@ public class Principal {
         do{
             menu();
             opcion = teclado.nextInt();
+            teclado.nextLine();
 
             switch (opcion) {
                 case 1:
@@ -47,10 +48,43 @@ public class Principal {
                 case 3:
                     buscarActores();
                     break;
+                case 4:
+                    buscarAutoresVivos();
+                    break;
+                case 5:
+                    buscarPorIdioma();
+                    break;
+                case 0:
+                    System.out.println("Saliendo...");
+                    break;
+                default:
+                    System.out.println("Opción no válida, por favor intente de nuevo.");
             }
 
         }while (opcion != 0);
 
+    }
+
+    private void buscarPorIdioma() {
+        System.out.print("Ingrese el idioma: ");
+        String idioma = teclado.nextLine();
+        List<Libro> libros = repository.findAll();
+        libros.stream()
+                .filter(libro -> libro.getIdiomas().contains(idioma))
+                .forEach(System.out::println);
+    }
+
+    private void buscarAutoresVivos() {
+        System.out.print("Ingrese el año: ");
+        int anio = teclado.nextInt();
+        teclado.nextLine(); // Consumir la nueva línea después de nextInt()
+
+        List<Autor> autores = autorRepository.findAll();
+        autores.stream()
+                .filter(autor -> autor.getFechaNacimiento() <= anio &&
+                        (autor.getFechaDefuncion() == null || autor.getFechaDefuncion() > anio))
+                .forEach(System.out::println);
+        
     }
 
     private void buscarActores() {
