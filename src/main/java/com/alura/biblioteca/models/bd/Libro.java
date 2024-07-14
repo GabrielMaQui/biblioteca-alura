@@ -1,11 +1,14 @@
 package com.alura.biblioteca.models.bd;
 
 import jakarta.persistence.Column;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
 
+
+@AllArgsConstructor
 @Getter
 @Setter
 public class Libro {
