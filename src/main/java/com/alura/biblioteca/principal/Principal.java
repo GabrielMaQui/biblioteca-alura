@@ -4,8 +4,11 @@ import com.alura.biblioteca.models.Datos;
 import com.alura.biblioteca.models.DatosLibros;
 import com.alura.biblioteca.models.bd.Autor;
 import com.alura.biblioteca.models.bd.Libro;
+import com.alura.biblioteca.repository.LibroRepository;
 import com.alura.biblioteca.service.ConsumoAPI;
 import com.alura.biblioteca.service.ConvierteDatos;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -18,6 +21,12 @@ public class Principal {
     private final Scanner teclado = new Scanner(System.in);
 
 
+    private LibroRepository repository;
+
+    public Principal(LibroRepository repository) {
+        this.repository = repository;
+    }
+
     public void muestraMenu() {
         buscarPorTitulo("quijote");
     }
@@ -25,7 +34,7 @@ public class Principal {
     public void buscarPorTitulo(String titulo) {
         var json = consumoAPI.obtenerDatos(URL + titulo.replace(" ", "+"));
         var datos = convierteDatos.obtenerDatos(json, Datos.class);
-        //System.out.println(datos);
+
         Optional<DatosLibros> librosBuscado = datos.libros().stream()
                 .filter(l -> l.titulo().toUpperCase().contains(titulo.toUpperCase()))
                 .findFirst();
@@ -36,7 +45,8 @@ public class Principal {
                     .toList();
             Libro libroNuevo = new Libro(librosBuscado.get().titulo(), autors,
                                         librosBuscado.get().idiomas(), librosBuscado.get().numeroDeDescargas());
-            System.out.println(libroNuevo.toString());
+            System.out.println(libroNuevo);
+            repository.save(libroNuevo);
         }
         else{
             System.out.println("Libro no encontrado");
